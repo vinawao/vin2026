@@ -1,81 +1,443 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GEMINI IPTV Player</title>
-  
-  <!--script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"--></script>
-  <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css"--> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>myTV Player</title>
 
+<!-- SHAKA.PLAYEE -->
 
-<!-- SHAKA.PLAYER -->
-
-<script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.compiled.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.compiled.js"></script> 
 
 <!-- HLS.JS -->
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
 
-<script src="https://cdn.jsdelivr.net/npm/mux.js@latest/dist/mux.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mux.js@latest/dist/mux.min.js"></script> 
 
 
 <!-- DASH.JS -->
 
-<script src="https://cdn.dashjs.org/v5.1.0/dash.all.min.js"></script>
+<script src="https://cdn.dashjs.org/v5.1.0/dash.all.min.js"></script> 
 
 
 
-<!-- UI build (recommended) -->
-<script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
+    <!-- UI build (recommended) -->
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"> 
+
+ <style> 
 
 
-  <link rel="stylesheet" href="http://iptv2023.xtgem.com/2026/GEMINI/GEMINI_PUBLIC.css"> 
+video { background: #000; }
+
+.shaka-controls-container {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.7s ease; /* durasi dan gaya transisi */
+}
+
+.shaka-controls-container.visible {
+  opacity: 1;
+  visibility: visible;
+} 
 
 
-  <style>
+h2, h3, h4 { font-size: 14px; font-weight: bold;  text-align: center; margin: 2px 4px; 
+  padding: 4px; } 
 
 
-  </style> 
-
-</head>
-<body>
-
-  <div class="player-wrapper">
-    <div data-shaka-player-container>
-      <video id="video" data-shaka-player autoplay></video>
-     <div class="message" id="messageBox">                  </div>
-    </div>
+.message {
+  display: none; margin: 2px 4px; 
+  padding: 4px; text-align: center; 
+  background-color: #000;
+  color: red; font-size: 14px; font-weight: bold; 
+  border: none;
+} 
 
 
-  <div class="filter-container" id="filterContainer" style="display: none;">
-    <select id="groupSelect" class="group-select">
-    ➡️  <option value="ALL">Semua Kategori</option>
-    </select>
+ </style> 
+
+</head> 
+
+<body style="margin:0; background:#000; color:#fff; font-family:Arial,sans-serif;"> 
+
+<center>
+  <div data-shaka-player-container style="max-width:98vw; width:100%; aspect-ratio:16/9; margin:5px auto;"> 
+
+    <video autoplay loop data-shaka-player id="video" style="width:100%; height:100%;" poster=""></video> 
+
   </div>
-
-  </div> 
-
-
- <!-- STICKY END --> 
+</center>
 
 
-  <div class="playlist-container">
-    <div class="status-bar" id="statusBar">Memuat data...</div>
-    <div class="channel-grid" id="channelGrid"></div>
-  </div>
+<!-- Overlay error neon -->
+<div id="errorOverlay" class="error-overlay">
+<div class="message">
+
+</div>
+</div> 
 
 
-  <script src="http://iptv2023.xtgem.com/2026/GEMINI/GEMINI_PUBLIC.js"></script> 
+
+<script> 
 
 
-  <script src="http://iptv2023.xtgem.com/2026/GEMINI/FOOTER_PUBLIC.js"></script> 
+/* ================= NEW STATE ================= */
+let CHANNELS = [];
+let CURRENT_GROUP = "ALL";
+let epgMap = {};
 
-  <script src="http://iptv2023.xtgem.com/2026/GEMINI/SCROLLTEXT.js"></script> 
+let shakaPlayer = null;
+let hls = null;
 
+let currentChannel = null;
+let currentChannelIndex = -1;
+
+let lastPlayerType = null;     // "dash" | "hls" | "native"
+let isPlayerReady = false;
+
+let loadToken = 0;
+
+let lastAudioLang = null;
+let lastSubtitleLang = null;
+
+const video = document.getElementById("video");
+const norm = s => (s || "").toLowerCase().trim(); 
+
+let isLoadingChannel = false;  // FIX: Definisi variabel ini (global)
+
+
+
+// ======= BATAS ======== // 
+
+// 🔥🔥Ambil semua query parameters
+const urlParams = new URLSearchParams(window.location.search);
+
+// =============================================
+// 1. Ambil manifest URL (prioritas: dash > m3u8)
+let manifestUri = '';
+if (urlParams.has('dash')) {
+  manifestUri = urlParams.get('dash').trim();
+} else if (urlParams.has('m3u8') || urlParams.has('url') || urlParams.has('url_dash')) {
+  manifestUri = (urlParams.get('m3u8') || urlParams.get('url') || urlParams.get('url_dash')).trim();
+}
+
+// =============================================
+// 2. Parsing key (ClearKey atau Widevine license)
+
+let clearKeys = {};
+let widevineLicenseServer = null;
+
+if (urlParams.has('key')) {
+  const rawKey = urlParams.get('key');
+
+  // decode SEKALI saja
+  const keyStr = decodeURIComponent(rawKey).trim();
+
+  // ===== Widevine URL =====
+  if (/^https?:\/\//i.test(keyStr)) {
+    widevineLicenseServer = keyStr;
+  }
+
+  // ===== Widevine prefix =====
+  else if (keyStr.startsWith('wv:')) {
+    widevineLicenseServer = keyStr.slice(3).trim();
+  }
+
+  // ===== ClearKey =====
+  else if (keyStr.includes(':')) {
+    keyStr.split(',').forEach(pair => {
+      const [kid, key] = pair.split(':');
+
+      if (
+        /^[0-9a-fA-F]{32}$/.test(kid) &&
+        /^[0-9a-fA-F]{32}$/.test(key)
+      ) {
+        clearKeys[kid] = key;
+      }
+    });
+  }
+}
+
+
+// =============================================
+// 3. Referer (untuk header manifest & license)
+const customReferer = urlParams.get('referer') || urlParams.get('url_referer') || 'https://aiv-cdn.net/';
+
+// =============================================
+// 4. bitrate & starttime (untuk contoh, bisa dikembangkan)
+const bitratePref = urlParams.get('bitrate') || 'auto'; // sd / hd / auto
+const startTime = parseFloat(urlParams.get('starttime') || 0);
+
+// =============================================
+// Inisialisasi Shaka Player
+async function initPlayer() { 
+
+// ▶️Debug sementara (comment baris ini di production)
+if (shaka && shaka.log) {
+  shaka.log.setLevel(shaka.log.Level.DEBUG);
+
+  setTimeout(() => {
+    shaka.log.setLevel(shaka.log.Level.NONE);
+    console.log('Shaka logs dimatikan otomatis setelah 3 detik');
+  }, 3000);
+}
+
+// ▶️Lanjut kode player.load() seperti biasa...
+
+  if (!manifestUri) {
+    document.body.innerHTML += '<h3 style="color:red; text-align:center; font-size: 15px;">Error: Tidak ada URL manifest (dash/m3u8/url) di query string</h3>';
+    return;
+  }
+
+  const ui = video['ui'];
+  const controls = ui.getControls();
+  const player = controls.getPlayer();
+
+
+
+
+
+      ui.configure({
+        'addSeekBar': false,
+        'controlPanelElements': [
+          'play_pause',
+        'time_and_duration',
+         'spacer',
+//         'quality',
+//         'audio',
+         'captions',
+//        'language',
+         'mute',
+          'volume',
+        'fullscreen',
+          'overflow_menu'  // agar quality/audio/subtitle muncul di menu
+        ],
+        'overflowMenuButtons': [
+          'quality',
+          'language_audio',
+          'language', 
+//         'captions', 
+          'playback_rate'  // optional
+        ],
+        'fadeDelay': 5,          // optional: controls hilang setelah 5 detik 🟢🟢 
+        'doubleClickFullscreen': true  // optional: double tap fullscreen di mobile
+      });
+
+
+const videoEl = controls.getVideo();
+const controlsContainer = document.querySelector('.shaka-controls-container');
+
+let hideTimeout;
+
+function showControls() {
+  if (controlsContainer) {
+    controlsContainer.classList.add('visible');
+  }
+
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+  }
+
+  hideTimeout = setTimeout(() => {
+    if (controlsContainer) {
+      controlsContainer.classList.remove('visible');
+    }
+  }, 5000); // hilang setelah 5s 
+}
+
+['click', 'touchend', 'mousemove'].forEach(evt => {
+  videoEl.addEventListener(evt, e => {
+    e.stopPropagation();
+    showControls();
+  }, true);
+}); 
+
+
+
+
+// ▶️▶️▶️ 
+
+
+
+// 2. Fallback manual deteksi rotate (untuk device/browser yang config di atas kurang responsif)
+if (screen.orientation) {
+  screen.orientation.addEventListener('change', async () => {
+    if (screen.orientation.type.includes('landscape') && !document.fullscreenElement) {
+      // Masuk landscape → request fullscreen + lock
+      try {
+        const container = document.querySelector('[data-shaka-player-container]') || video;
+        await container.requestFullscreen();
+        await screen.orientation.lock('landscape');
+      } catch (err) {
+        console.warn('Auto landscape fullscreen gagal:', err);
+      }
+    } 
+
+    // Opsional: auto exit saat kembali portrait (hapus blok ini kalau tidak mau)
+
+    else if     (screen.orientation.type.includes('portrait') && document.fullscreenElement) {
+      try {
+        screen.orientation.unlock();
+        document.exitFullscreen();
+      } catch (err) {
+        console.warn('Auto exit fullscreen gagal:', err);
+      }
+    }
+  }); 
+
+ }
+
+
+
+  // 🛑Konfigurasi dasar tambahan
+  const config = {
+    preferredAudioLanguage: 'en',
+    preferredTextLanguage: 'en', 
+  abr: { enabled: true },
+    streaming: {
+      bufferingGoal: 15,
+      rebufferingGoal: 4,
+      lowLatencyMode: true, // ubah ke true jika ingin low latency
+    jumpLargeGaps: true,
+    startAtSegmentBoundary: false
+    }, 
+drm: {
+reuseDrmSessions: true // Ini krusial untuk switch DRM
+}
+  };
+
+
+//* ===== CLEANUP PLAYER ===== *//
+if (shakaPlayer) await shakaPlayer.destroy().catch(()=>{});
+if (hls) hls.destroy();
+
+shakaPlayer = null;
+hls = null;
+
+video.pause();
+video.removeAttribute("src");
+video.load();
+
+
+
+  // 🛑DRM Configuration
+  const drmConfig = {
+  preferredKeySystems: []
+};
+
+if (widevineLicenseServer) {
+  drmConfig.servers = {
+    'com.widevine.alpha': widevineLicenseServer
+  };
+  drmConfig.preferredKeySystems.push('com.widevine.alpha');
+}
+
+if (!widevineLicenseServer && Object.keys(clearKeys).length) {
+  drmConfig.clearKeys = clearKeys;
+  drmConfig.preferredKeySystems.push('org.w3.clearkey');
+}
+
+config.drm = drmConfig;
+
+
+  player.configure(config); //🛑lama
+
+  // Custom headers via request filter
+  player.getNetworkingEngine().registerRequestFilter((type, request) => {
+    if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
+        type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+      request.headers['Referer'] = customReferer;
+      request.headers['Origin'] = new URL(customReferer).origin;
+      request.headers['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+    }
+
+    if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
+      // Tambahkan header khusus license jika perlu (misal Bearer token)
+      // request.headers['Authorization'] = 'Bearer xxx';
+    }
+  });
+
+  // Attach global untuk debug
+  window.player = player;
+  window.ui = ui;
+
+
+
+// ==== 🛑 ERROR HANDLING ====== // 
+
+player.addEventListener('error', e => {
+  console.error('Shaka Error:', e.detail);
+
+  const messageDiv = document.querySelector('.message');
+  if (messageDiv) {
+    messageDiv.textContent = 'Koneksi Anda bermasalah: ' + (e.detail?.message || 'Unknown');
+    messageDiv.style.display = 'block';
+
+    // Hilangkan pesan setelah 10 detik
+    setTimeout(() => {
+      messageDiv.textContent = '';
+      messageDiv.style.display = 'none';
+    }, 10000);
+  }
+});
+
+// Clear pesan ketika player kembali playing
+player.addEventListener('playing', () => {
+  const messageDiv = document.querySelector('.message');
+  if (messageDiv) {
+    messageDiv.textContent = 'Kembali online';
+    messageDiv.style.display = 'block'; 
+
+    // Hilangkan pesan setelah 5 detik
+    setTimeout(() => {
+      messageDiv.textContent = '';
+      messageDiv.style.display = 'none';
+    }, 5000);
+  }
+}); 
+
+
+
+console.log('Manifest URL:', manifestUri);
+console.log('Clear Keys:', clearKeys);
+console.log('Widevine Server:', widevineLicenseServer);
+console.log('Current DRM config:', player.getConfiguration().drm); 
+
+
+
+
+  try {
+    await player.load(manifestUri);
+    console.log('Manifest loaded successfully!');
+
+    if (startTime > 0) {
+      video.currentTime = startTime;
+    }
+
+    // Contoh: jika ingin paksa bitrate tertentu (perlu logic track selection lebih lanjut)
+    if (bitratePref === 'sd') {
+      console.log('Prefer SD quality (implementasi manual track selection dibutuhkan)');
+    } else if (bitratePref === 'hd') {
+      console.log('Prefer HD quality');
+    }
+  } catch (err) {
+    console.error('Load failed:', err);
+    document.body.innerHTML += `<h3 style="color:red;">Stream ini offline: ${err.message || err}</h3>`;
+  }
+} 
+
+
+
+// Tunggu UI Shaka siap
+document.addEventListener('shaka-ui-loaded', initPlayer);
+document.addEventListener('shaka-ui-load-failed', () => {
+  console.error('Gagal memuat Shaka UI');
+  document.body.innerHTML += '<h3 style="color:red;">Gagal memuat Player UI</h3>';
+});
+
+</script> 
 
 </body>
 </html>
-
-
