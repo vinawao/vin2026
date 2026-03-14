@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEMINI IPTV Player</title>
+  
+  <!--script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"--></script>
+  <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css"--> 
+
+
+<!-- SHAKA.PLAYER -->
+
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.compiled.js"></script>
+
+<!-- HLS.JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mux.js@latest/dist/mux.min.js"></script>
+
+
+<!-- DASH.JS -->
+
+<script src="https://cdn.dashjs.org/v5.1.0/dash.all.min.js"></script>
+
+
+
+<!-- UI build (recommended) -->
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
+
+
+  <link rel="stylesheet" href="http://iptv2023.xtgem.com/2026/GEMINI/GEMINI_PUBLIC.css"> 
+
+
+  <style>
+
+
+  </style> 
+
+</head>
+<body>
+
+  <div class="player-wrapper">
+    <div data-shaka-player-container>
+      <video id="video" data-shaka-player autoplay></video>
+     <div class="message" id="messageBox">                  </div>
+    </div>
+
+
+  <div class="filter-container" id="filterContainer" style="display: none;">
+    <select id="groupSelect" class="group-select">
+    ➡️  <option value="ALL">Semua Kategori</option>
+    </select>
+  </div>
+
+  </div> 
+
+
+ <!-- STICKY END --> 
+
+
+  <div class="playlist-container">
+    <div class="status-bar" id="statusBar">Memuat data...</div>
+    <div class="channel-grid" id="channelGrid"></div>
+  </div>
+
+
+  <script src="http://iptv2023.xtgem.com/2026/GEMINI/GEMINI_PUBLIC.js"></script> 
+
+
+  <script src="http://iptv2023.xtgem.com/2026/GEMINI/FOOTER_PUBLIC.js"></script> 
+
+  <script src="http://iptv2023.xtgem.com/2026/GEMINI/SCROLLTEXT.js"></script> 
+
+
+</body>
+</html>
+
+
