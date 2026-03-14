@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+ <!-- 🛑🛑🛑 MASTER 🛑🛑🛑 --> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Halaman official dari DENSTV App">
+    <meta name="robots" content="index, follow">
+  <meta name="author" content="Yudhi Android Labs"> 
+
+    <title>DENSTV WEB VIDEO PLAYER By Yudhi Android Labs™</title>
+
+    <link rel="canonical" href="">
+    <!-- Meta Tag Lainnya seperti Open Graph untuk Media Sosial bisa ditambahkan di sini --> 
+
+
+ <style> 
+
+html, body { max-width: 750px; height: 100%; margin: 0; background: #ddd; } 
+
+video { background: #000; } 
+
+a, a:link { text-decoration: none; } 
+
+select {
+  width: 220px; /* Sets the width of the select box */
+  height: 40px; /* Sets the height of the select box */
+   font-weight: bold; font-size: 15px; /* Sets the font size for the select and its options */
+  padding: 5px; /* Adds padding */ text-transform: uppercase; position: relative; 
+}
+
+select option {
+  border: 1px solid maroon; background-color: #f0f0f0; /* Styles the options' background color */ text-transform: uppercase; font-size: 15px; 
+}
+
+
+button { margin: 2px 4px; padding: 9px 7px; background: navy; font-weight: bold; font-size: 15px; color: silver; } 
+
+
+ul {  
+   list-style-type: disc;  
+   padding: 3px 3px;  
+   margin: 0px 14px;  
+ }  
+
+
+ul li {  
+   list-style-type: disc;  
+   padding: 3px 3px;  } 
+
+
+.rotate:hover {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease;
+}
+
+.gradient {
+    background: linear-gradient(45deg, #FFC107, #FF9800, #FF5722, #E91E63, #9C27B0, #673AB7, #3F51B5, #2196F3, #03A9F4, #00BCD4, #009688, #4CAF50);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite; margin: 2px 0; padding: 4px 3px; border: 1px solid #333; border-radius: 8px 8px 8px 8px; 
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.glow:hover {
+    animation: glow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF5722, 0 0 40px #FF5722, 0 0 50px #FF5722, 0 0 60px #FF5722, 0 0 70px #FF5722;
+    }
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #FF5722, 0 0 40px #FF5722, 0 0 50px #FF5722, 0 0 60px #FF5722, 0 0 70px #FF5722, 0 0 80px #FF5722;
+    }
+}
+
+
+.blink-border {
+    border: 3px solid transparent;
+    animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+    from {
+        border-color: #FF5722;
+    }
+    to {
+        border-color: transparent;
+    }
+}
+
+
+.blink {
+  animation: blinker 10s linear infinite;
+}
+
+@keyframes blinker {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.5; }
+}
+
+.scaling-button {
+    padding: 8px 10px;
+    background-color: #FF5722;
+    color: #FFF;
+    border: 2px solid gold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.scaling-button
+{
+transform: scale(1.1);
+}
+
+
+
+.shadow-hover {
+    transition: box-shadow 1.5s;
+}
+
+.shadow-hover:hover {
+    box-shadow: 0 0 250px rgba(255, 87, 34, 0.5);
+}
+
+
+
+.dens04 { margin: 2px 0; padding: 4px 3px; border: 1px solid #333; border-radius: 8px 8px 8px 8px; background: teal; position: relative; }
+
+.dens05 { margin: 3px 0; padding: 5px 3px; } 
+
+.dens06 { margin: 2px 0; padding: 4px 8px; border: 1px solid #777; background: #eee; } 
+
+
+
+
+
+.fixed {
+  position: sticky;
+  top: 1;
+  right: 0;
+  width: 100%;
+  background-color: #fff;
+  opacity: 1.0; z-index: 9999; border-bottom: 3px dashed #333; padding-bottom: 0.5px; 
+}
+
+
+.dens04 img {
+  -webkit-transition: 0.4s ease;
+  transition: 0.4s ease;
+  width: 700px;
+}
+ 
+.zoom-effect:hover .dens04 img {
+  -webkit-transform: scale(2.08);
+  transform: scale(2.08);
+}
+
+
+.cssSalinEdit.button-glow:hover {
+  box-shadow: 0 0 20px #3b82f6;
+  transition: 0.3s ease;
+}
+
+ </style> 
+
+
+<!--
+Source - https://stackoverflow.com/a
+Posted by user6250770, modified by community. See post 'Timeline' for change history
+Retrieved 2026-01-21, License - CC BY-SA 4.0
+-->
+
+
+
+
+ <!-- 🅾️🅾️🅾️ --><div class="fixed" style="width: 100%; height: auto: background-color: #000;">
+
+   <iframe id="MyFrame" width="100%" height="257" src="http://iptv2023.xtgem.com/2026/IFRAME_IPTV/f2869358.jpeg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen scrolling="no" style="overflow: hidden;"></iframe> 
+
+ </div><style> 
+
+.highlight-skew {
+  background-color: #ffeb3b;
+  position: relative;
+  display: inline-block;
+  padding: 0 5px;
+}
+
+.highlight-skew::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffeb3b;
+  transform: skew(-15deg); /* Membuat efek miring */
+  z-index: -1;
+} 
+
+
+.scaling-button:hover, .button:active { background: green; }
+
+    .red2{ background: #ff0000; }
+    .green2{ background: #228B22; }
+    .blue2{ background: #0000ff; }
+    .maroon2{ background: maroon; } 
+    .black{ background: black; } 
+
+
+.box, .black-box, .black box, .black.box {
+ display:none; }
+
+
+</style> 
+
+
+
+
+    <div class="red box"> 
+
+<script> 
+
+// Source - https://stackoverflow.com/a
+// Posted by user6250770, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-21, License - CC BY-SA 4.0
+
+function newSrc01() {
+  var e = document.getElementById("MySelectMenu01");
+  var newSrc01 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc01;
+}
+
+</script> 
+
+ <center> <b class="highlight-skew">KATEGORI NASIONAL</b>
+     <p><select id="MySelectMenu01" class="blink-border">
+
+<script src="https://denstv.wapka.fun/option_nasional_js"></script> 
+
+ </select> 
+
+<button onClick="newSrc01();" class="scaling-button">WATCH NOW</button>
+
+  </center> </div>
+
+
+    <div class="green box"> 
+
+<script> 
+
+// Source - https://stackoverflow.com/a
+// Posted by user6250770, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-21, License - CC BY-SA 4.0
+
+function newSrc02() {
+  var e = document.getElementById("MySelectMenu02");
+  var newSrc02 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc02;
+}
+
+</script> 
+
+ 
+<center> <b class="highlight-skew">KATEGORI SPORTS</b>
+     <p><select id="MySelectMenu02" class="blink-border">
+
+<script src="http://iptv2023.xtgem.com/2026/IFRAME_IPTV/option_sports_js"></script> 
+
+ </select> 
+
+
+<button onClick="newSrc02();" class="scaling-button">WATCH NOW</button>
+
+  </center> </div> 
+
+
+
+    <div class="blue box"> 
+
+<script> 
+
+// Source - https://stackoverflow.com/a
+// Posted by user6250770, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-21, License - CC BY-SA 4.0
+
+function newSrc03() {
+  var e = document.getElementById("MySelectMenu03");
+  var newSrc03 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc03;
+}
+
+</script> 
+
+<center> <b class="highlight-skew">KATEGORI KIDS</b>
+     <p><select id="MySelectMenu03" class="blink-border">
+
+<script src="https://denstv.wapka.fun/option_kids_js"></script> 
+
+ </select> 
+
+<button onClick="newSrc03();" class="scaling-button">WATCH NOW</button>
+
+  </center> </div> 
+
+
+
+    <div class="maroon box"> 
+
+<script> 
+
+// Source - https://stackoverflow.com/a
+// Posted by user6250770, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-21, License - CC BY-SA 4.0
+
+function newSrc04() {
+  var e = document.getElementById("MySelectMenu04");
+  var newSrc04 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc04;
+}
+
+</script> 
+
+<center> <b class="highlight-skew">KATEGORI MOVIES</b>
+     <p><select id="MySelectMenu04" class="blink-border">
+
+<script src="https://denstv.wapka.fun/option_kids_js"></script> 
+
+ </select> 
+
+<button onClick="newSrc04();" class="scaling-button">WATCH NOW</button>
+
+  </center> </div> 
+
+
+
+
+<script>
+
+function newSrc13() {
+  var e = document.getElementById("MySelectMenu13");
+  var newSrc13 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc13;
+}
+
+</script> 
+
+<div class="black box">
+
+<center>
+
+<b class="highlight-skew">KATEGORI VIP PREMIUM 18+</b>
+<br>
+<span style="color: red; font-size: 14px; padding-top: 7px;">Warning: Contains adult content, not for kids..!</span> 
+
+<p>
+<select id="MySelectMenu13" class="blink-border">
+
+<script src="https://denstv.wapka.fun/option_vip_js"></script>
+
+</select>
+
+<button onclick="newSrc13()" class="scaling-button">
+WATCH NOW
+</button>
+
+</center>
+
+</div>
+
+
+
+ <!-- ⛔⛔⛔⛔ TEST --> 
+
+
+<script>
+
+function newSrc23() {
+  var e = document.getElementById("MySelectMenu23");
+  var newSrc23 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc23;
+}
+
+</script> 
+
+<div class="hitam box">
+
+<center>
+
+<b class="highlight-skew">KATEGORI VIP PREMIUM 18+ hitam</b>
+<br>
+<span style="color: red; font-size: 14px; padding-top: 7px;">Warning: Contains adult content, not for kids..!</span> 
+
+<p>
+<select id="MySelectMenu23" class="blink-border">
+
+<script src="https://denstv.wapka.fun/option_vip_js"></script>
+
+</select>
+
+<button onclick="newSrc23()" class="scaling-button">
+WATCH NOW
+</button>
+
+</center>
+
+</div>
+
+
+
+<script>
+
+function newSrc33() {
+  var e = document.getElementById("MySelectMenu33");
+  var newSrc33 = e.options[e.selectedIndex].value;
+  document.getElementById("MyFrame").src=newSrc33;
+}
+
+</script> 
+
+<div class="gelap box">
+
+<center>
+
+<b class="highlight-skew">KATEGORI VIP PREMIUM 18+ gelap</b>
+<br>
+<span style="color: red; font-size: 14px; padding-top: 7px;">Warning: Contains adult content, not for kids..!</span> 
+
+<p>
+<select id="MySelectMenu33" class="blink-border">
+
+<script src="https://denstv.wapka.fun/option_vip_js"></script>
+
+</select>
+
+<button onclick="newSrc33()" class="scaling-button">
+WATCH NOW
+</button>
+
+</center>
+
+</div><script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<style>
+    /* Container untuk Grid Tombol */
+    .button-grid {
+        display: grid;
+        /* Membuat tepat 3 baris */
+        grid-template-columns: repeat(3, 1fr); 
+        /* Membuat item baru mengisi kolom berikutnya (overflow vertikal) */
+        grid-auto-flow: row; 
+        gap: 3px;
+        overflow-x: scroll; /* Scroll horizontal jika tombol terlalu banyak */
+        padding: 6px 0;
+        margin-bottom: 2px;
+        border: 1px solid #eee;
+    }
+
+
+    .filter-btn {
+        padding: 8px 4px; width: 120px; 
+        background-color: #f0f0f0; color: #333; 
+        border: 2px solid #333; border-radius: 4px; font-weight: bold; 
+        cursor: pointer;
+        white-space: nowrap;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .filter-btn:hover {
+        background-color: #e0e0e0;
+    }
+
+    .filter-btn.active {
+        background-color: #333;
+        color: white;
+        border-color: gold;
+    }
+
+
+    /* Styling Box */
+    .box {
+        padding: 8px 7px 4px;
+        margin-top: 3px; color: #222; 
+        border: 2px solid #000;
+        display: none; /* Sembunyikan semua di awal */ 
+     letter-spacing: 0.5px;   word-spacing: 3px; 
+    }
+    
+    .red { background: #ffcccc; }
+    .green { background: #ccffcc; }
+    .blue { background: #ccccff; }
+    .maroon { background: maroon; } 
+    .black { background: black; } 
+
+
+    #VIP { background: maroon; color: gold; } 
+
+
+</style>
+
+
+
+<script>
+$(document).ready(function(){
+    $(".filter-btn").click(function(){
+        // Mengatur status active pada tombol
+        $(".filter-btn").removeClass("active");
+        $(this).addClass("active");
+
+        var optionValue = $(this).attr("data-value");
+        
+        if(optionValue){
+            $(".box").not("." + optionValue).hide();
+            $("." + optionValue).show();
+        } else {
+            $(".box").hide();
+        }
+    });
+});
+</script> 
+
+
+
+
+<div class="button-grid">
+<button class="filter-btn" data-value="">Clear All</button>
+<button class="filter-btn" data-value="red">NASIONAL</button>
+<button class="filter-btn" data-value="green">SPORTS</button>
+<button class="filter-btn" data-value="blue">KIDS</button>
+
+<button class="filter-btn" data-value="maroon">MOVIES</button>
+
+<button class="filter-btn" data-value="red">Entertainmentt</button>
+
+<button class="filter-btn" data-value="hitam">Knowledgee hitam</button>
+<button class="filter-btn" data-value="gelap">Internasionall gelap</button>
+
+<button class="filter-btn" data-value="maroon">Live Events 1</button>
+
+<button class="filter-btn" data-value="maroon">Live Events 2</button>
+
+    <button id="VIP" class="filter-btn" data-value="black">⛔ VIP</button> 
+
+</div>
+
+
+
+
+
+ 
+<div id="vipModal" class="modal-overlay">
+
+<div class="modal-box">
+
+<h3>🔒 Restricted Access</h3>
+<p>Konten VIP Premium, hubungi Administrator atau Developer aplikasi ini untuk mendapatkan kode PIN akses</p>
+
+<input type="password" id="vipInput" maxlength="6" placeholder="PIN 6 digit">
+
+<p id="vipError" style="display:none;color:red;">Kode PIN Salah 🥸</p>
+
+<button id="vipCancel">Batal</button>
+<button id="vipUnlock">Buka Akses</button>
+
+</div>
+
+</div>
+
+
+
+
+    <style>
+
+        /* Overlay Modal */
+.modal-overlay {
+    display: none; /* Sembunyi secara default */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Kotak Modal */
+.modal-box {
+    background: #1a1a1a;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #d4af37; /* Warna Gold */
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.modal-header h3 { color: #d4af37; margin-bottom: 10px; }
+
+/* Input PIN */
+#vipInput {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #000;
+    color: #d4af37;
+    font-size: 1.2rem;
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+/* Tombol-tombol */
+#vipCancel, #vipUnlock {
+    background: #3b5998;
+    color: orange;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    display: none; /* Sembunyi kecuali salah */
+}
+
+    </style>
+
+
+
+
+<script>
+const buttons = document.querySelectorAll(".filter-btn");
+const boxes = document.querySelectorAll(".box");
+
+const vipModal = document.getElementById("vipModal");
+const vipInput = document.getElementById("vipInput");
+const vipError = document.getElementById("vipError");
+
+const vipUnlock = document.getElementById("vipUnlock");
+const vipCancel = document.getElementById("vipCancel");
+
+/* PIN per warna */
+const PINS = {
+  black: "123450",
+  hitam: "012345",
+  gelap: "abcdef"
+};
+
+/* status unlocked per warna */
+let unlocked = {
+  black: false,
+  hitam: false,
+  gelap: false
+};
+
+/* warna yang sedang dikunci */
+let currentColor = null;
+
+/* ====== SHOW BOX ====== */
+function showBox(color){
+  boxes.forEach(box=>{
+    box.style.display="none";
+  });
+  if(color==="") return;
+  const target = document.querySelector("."+color+".box");
+  if(target){
+    target.style.display="block";
+  }
+}
+
+/* ====== BUTTON CLICK ====== */
+buttons.forEach(btn=>{
+  btn.addEventListener("click", function(){
+    const value = this.dataset.value;
+
+    if(PINS[value]){ // jika tombol punya PIN
+      if(unlocked[value]){
+        showBox(value);
+      }else{
+        currentColor = value;
+        openVipModal();
+      }
+    }else{
+      showBox(value);
+    }
+  });
+});
+
+/* ====== MODAL ====== */
+function openVipModal(){
+  vipModal.style.display="flex";
+  vipInput.value="";
+  vipError.style.display="none";
+}
+
+function closeVipModal(){
+  vipModal.style.display="none";
+}
+
+vipCancel.onclick = function(){
+  closeVipModal();
+  vipInput.value = "";
+  vipError.style.display = "none";
+  if(currentColor){
+    document.querySelectorAll("."+currentColor+".box").forEach(el=>{
+      el.style.display = "none";
+    });
+  }
+};
+
+/* ====== CHECK PIN ====== */
+vipUnlock.onclick = function(){
+  if(currentColor && vipInput.value === PINS[currentColor]){
+    unlocked[currentColor] = true;
+    closeVipModal();
+    showBox(currentColor);
+  }else{
+    vipError.style.display="block";
+  }
+};
+</script>
+
+
+
+<textarea style="display:none;">
+
+<script>
+
+const buttons = document.querySelectorAll(".filter-btn");
+const boxes = document.querySelectorAll(".box");
+
+const vipModal = document.getElementById("vipModal");
+const vipInput = document.getElementById("vipInput");
+const vipError = document.getElementById("vipError");
+
+const vipUnlock = document.getElementById("vipUnlock");
+const vipCancel = document.getElementById("vipCancel");
+
+const VIP_PIN = "123450";
+
+let vipUnlocked = false;
+
+
+/* ====== SHOW BOX ====== */
+
+function showBox(color){
+
+boxes.forEach(box=>{
+box.style.display="none";
+});
+
+if(color==="") return;
+
+const target = document.querySelector("."+color+".box");
+
+if(target){
+target.style.display="block";
+}
+
+}
+
+
+/* ====== BUTTON CLICK ====== */
+
+buttons.forEach(btn=>{
+
+btn.addEventListener("click", function(){
+
+const value = this.dataset.value;
+
+if(value==="black"){
+
+if(vipUnlocked){
+
+showBox("black");
+
+}else{
+
+openVipModal();
+
+}
+
+return;
+
+}
+
+showBox(value);
+
+});
+
+});
+
+
+/* ====== MODAL ====== */
+
+function openVipModal(){
+
+vipModal.style.display="flex";
+vipInput.value="";
+vipError.style.display="none";
+
+}
+
+
+function closeVipModal(){
+
+vipModal.style.display="none";
+
+}
+
+
+vipCancel.onclick = function(){
+
+closeVipModal();
+
+vipInput.value = "";
+vipError.style.display = "none";
+
+/* paksa sembunyikan VIP box */
+document.querySelectorAll(".black.box").forEach(el=>{
+el.style.display = "none";
+});
+
+};
+
+
+
+/* ====== CHECK PIN ====== */
+
+vipUnlock.onclick = function(){
+
+if(vipInput.value === VIP_PIN){
+
+vipUnlocked = true;
+
+closeVipModal();
+
+showBox("black");
+
+}else{
+
+vipError.style.display="block";
+
+}
+
+};
+
+</script> 
+
+ </textarea> 
+
+&nbsp;<div id="densTV01" style="margin: -14px 0; padding: 12px 9px; font-size: 15.2px; border-top: 2px solid #555; overflow-y: scroll"> 
+
+<script src="https://denstv.wapka.fun/info-denstv-iframe-app-js"></script> 
+
+
+
+<style>
+
+footer {
+    position: fixed; /* Fixes the footer to the viewport */
+    bottom: 0;      /* Aligns the footer to the bottom edge of the viewport */
+    width: 100%;    /* Ensures the footer spans the full width */
+    /* Optional styling for appearance */
+    background-color: #333;
+    color: white;
+    text-align: left;
+    padding: 5px 5px 10px 15px; /* Add some padding for content */
+    height: 61px; /* Define a height for the footer */
+}
+
+/* Add margin to the body to prevent content from being hidden behind the fixed footer */
+body {
+    margin-bottom: 60px; /* Must match the footer's height */
+}
+
+
+td {
+  line-height: 0.9; /* Sets line height to 1.5 times the font size */ padding-left: 17px; 
+}
+
+</style> 
+
+
+<footer> 
+
+<table border="0" style="width: 100%; background: transparent; margin-top: 2px;">
+  <tr>
+    <td style="style="width: 70%;"><strong>DENSTV APP IPTV PLAYER</strong></td>
+  </tr>
+  <tr>
+    <td style="style="width: 70%;">© 2026</td>
+    <td style="style="width: 30%; padding: 2px 8px;"><a href="#epg" class="btnM">EPG VIEWER</a></td>
+  </tr>
+  <tr>
+    <td style="style="width: 70%;"><small>[Developer : Yudhi]</small></td>
+  </tr>
+</table>
+
+</footer>
+
+
+<!-- Modal 2 -->
+<div id="epg" class="modal">
+<div style="margin-top: 3px; padding: 5px 12px 1px 19px; font-size: 15px; font-weight: bold;">DENSTV EPG VIEWER <a href="#" class="close">tutup✖</a> </div>
+<div class="modal-content">
+<iframe id="myIframe" src="https://denstv.wapka.fun/denstv_web_dark_epg" frameborder="0" style="width: 100%; height: 480px; overflow-y: auto;" frameborder="0" scrolling="yes"></iframe>
+
+<!-- 🅰️🅰️ icecream_web_epg 🅰️🅰️ -->
+
+</div>
+</div><style>
+/* File: MODAL styles.css ⛔⛔*/
+
+
+
+
+footer .btnM { width: 120px; 
+color: #333; font-size: 14px;
+text-decoration: none; font-weight: bold;
+padding: 10px 10px; margin: -2px 5px 15px;
+background: #ccc;
+border-radius: 4px; z-index: 2000;
+}
+
+
+footer .btnN {
+color: green; font-size: 14px;
+text-decoration: none; font-weight: bold;
+padding: 5px 10px; margin: -2px 5px 15px;
+background: gold;
+border-radius: 4px; z-index: 2000;
+}
+
+footer .btnG {
+color: gold; background: lime; font-size: 18px;
+text-decoration: none; font-weight: bold;
+padding: 3px 8px; margin: -2px 5px 15px -4px;
+border-radius: 4px; z-index: 2000;
+}
+
+
+/* Modal dasar */
+.modal {
+position: fixed; font-size: 15px;
+left: 0; color: #222;
+right: 0; z-index: 7777;
+bottom: -100%; /* sembunyikan di bawah layar */
+background: #f9f9f9; max-width: 800px;
+transition: bottom 0.3s ease;
+height: 66%; /* bisa diatur tinggi dimensinya */
+box-shadow: 0 -2px 10px rgba(0,0,0,0.3); border: 2px solid maroon; border-radius: 5px;
+}
+
+.modal a { text-decoration: none; }
+
+
+/* Konten modal */
+.modal-content {
+padding: 7px; z-index: 1000;
+}
+
+iframe, #myIframe { z-index: ; }
+
+.close {
+float: right; z-index: 7777;
+text-decoration: none;
+font-size: 15px; padding: 2px 4px;
+color: gold; background: red; border: 1px solid gold; display: fixed;
+}
+
+/* Trick CSS dengan :target */
+.modal:target {
+bottom: 0; /* muncul dari bawah */
+}
+
+.uList { margin: -1px 2px 4px -22px; }
+
+li { padding-bottom: 1.8px; font-size: 0.9800em; }
+
+.stabilo {
+background-image: linear-gradient(to top, #ffeb3b 100%, transparent 40%);
+padding: 0 4px;
+}
+
+</style>&nbsp;
+
+</body> 
+  </html>
