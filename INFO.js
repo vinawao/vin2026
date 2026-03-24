@@ -1,5 +1,5 @@
 document.write('    
-<strong style="color: #0ff">GEMINI TV INFO HIGHLIGHT :</strong>\n 
+<strong style="color: #0ff">GEMINI TV INFO HIGHLIGHT :</strong>
 <p  style="color: lime">
 Stay tuned for new features.
 <br/>
