@@ -19,7 +19,7 @@ body { margin:0; background:#000; color:#fff; font-family:sans-serif; overflow:h
 
 /* SIDEBAR MODIFIKASI */ 
 
-.sidebar { width:225px; background:#000; overflow:auto; padding:0;border-right: 1px solid #222; height: auto; margin-left: 14px; margin-top: 0.2px; margin-bottom: 5px; gap: 2; }
+.sidebar { width:228px; background:#000; overflow:auto; padding:0;border-right: 1px solid #222; height: auto; margin-left: 14px; margin-top: 0.2px; margin-bottom: 5px; gap: 2; }
 
 .sidebar li { list-style:none; height: auto;  padding: 8px 7px 8px 17px; border-bottom: 1px solid gold; cursor: pointer; transition: 0.2s; margin: 4px 1px; border-radius: 4px; background:#444; color: orange; font-size: 15px; font-weight: bold; overflow: break-word; }
 
@@ -50,7 +50,7 @@ body { margin:0; background:#000; color:#fff; font-family:sans-serif; overflow:h
 
 .content { flex:1; overflow:auto; padding:10px; } 
 
-.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(90px,1fr)); gap: 6px;}
+.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(90px,1fr)); gap: 5px;}
 
 .channel-card { background:#666; color: white; padding:7px 6px; border-radius:10px; text-align:center; cursor:pointer; font-size: 11px; word-wrap: break-word; overflow: hidden; text-transform: capitalize; }
 
