@@ -56,7 +56,8 @@ body { margin:0; background:#000; color:#fff; font-family:sans-serif; overflow:h
 
 .channel-card img { width:80%; height: 50px; border-radius: 5px; object-fit:contain; margin-bottom: 3px; }
 
-.channel-card:focus { outline: 3px solid orange; background: #0ff; color: maroon; } 
+.active-channel,.channel-card:focus { outline: 3px solid orange; background: #0ff; color: maroon; } 
+
 .focused { outline:3px solid #00e676; background: orange; } 
 
 
