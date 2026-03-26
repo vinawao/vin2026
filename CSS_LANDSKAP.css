@@ -130,8 +130,8 @@ video { width: 100%; height: 100%; }
     position: fixed;
     top: 62px; /* Bawah header */
     right: 2px; /* Sesuai permintaan */
-    width: 48%; /* Sesuai permintaan */
-    background: #222; height: 60%; 
+    width: 49%; /* Sesuai permintaan */
+    background: #222; height: 63%; 
     border: 1px solid gold;
     border-radius: 4px;
     padding: 15px;
@@ -170,4 +170,6 @@ video { width: 100%; height: 100%; }
         }
         
         .kolom-2 .item {
-            background-color: #d1e7dd
+            background-color: #d1e7dd }
+
+
