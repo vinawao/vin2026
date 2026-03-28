@@ -1,6 +1,13 @@
+html, body {
+    /* Mengizinkan scroll (pan) tapi mematikan pinch-zoom dan double-tap-zoom */
+    touch-action: pan-x pan-y;
+}
+
+
+
 body { margin:0; background:#000; color:#fff; font-family:sans-serif; overflow:hidden; }
 
-.header { position:fixed; top:0; width:100%; background:#222; padding: 10px 23px 7px 27px; z-index:10; border-bottom: 1px solid #333; margin-bottom: 1px;  border-bottom: 2px solid gold; display: flex; flex-direction: row; 
+.header { position:fixed; top:0; width:100%; background:#222; padding: 8px 23px 6px 27px; z-index:10; border-bottom: 1px solid #333; margin-bottom: 1px;  border-bottom: 2px solid gold; display: flex; flex-direction: row; 
   justify-content: space-between; align-items: center; }
 
 .right { padding: 6px 8px; outline: 1px solid gold; border-radius: 5px; font-size: 14px; font-weight: bold; } 
@@ -14,14 +21,14 @@ body { margin:0; background:#000; color:#fff; font-family:sans-serif; overflow:h
  }
 
 
-.main {display:flex;margin-top: 60px; height:calc(100vh - 60px);}
+.main {display:flex;margin-top: 58px; height:calc(100vh - 58px);}
 
 
 /* SIDEBAR MODIFIKASI */ 
 
-.sidebar { width:235px; background:#000; overflow:auto; padding:0;border-right: 1px solid #222; height: auto; margin-left: 14px; margin-top: 0.2px; margin-bottom: 5px; gap: 2; }
+.sidebar { width:236px; background: #000; overflow: auto; padding:0; border-right: 0px solid #222; height: auto; margin-left: 14px; margin-top: -4px; margin-bottom: 6px; gap: 2; }
 
-.sidebar li { list-style:none; height: auto;  padding: 8px 7px 8px 14px; border-bottom: 1px solid gold; cursor: pointer; transition: 0.2s; margin: 4px 2px; border-radius: 4px; background:#444; color: orange; font-size: 15px; font-weight: bold; overflow: break-word; }
+.sidebar li { list-style:none; height: auto;  padding: 8px 7px 8px 14px; border-bottom: 1px solid gold; cursor: pointer; transition: 0.2s; margin: 4px 2px; border-radius: 4px; background: #333; color: orange; font-size: 15px; font-weight: bold; overflow: auto; word-wrap: break-word; }
 
 .sidebar li:focus {outline:2px solid #fff; background:#1b1b1b;} 
 
@@ -45,16 +52,45 @@ body { margin:0; background:#000; color:#fff; font-family:sans-serif; overflow:h
     color: maroon; font-size: 11px; } 
 
 
+.sidebar li.active-group {
+  /* Initial state: solid left border, set width and color */
+  border-left: 10px solid red; 
+  /* Other borders for context (optional) */
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  
+  
+  /* Apply the animation */
+  animation-name: borderBlink;
+  animation-duration: 3s; /* Duration of one animation cycle */
+  animation-iteration-count: infinite; /* Repeat forever */
+  animation-timing-function: step-end; /* Ensures a sharp on/off blink */
+}
+
+/* Define the keyframes for the animation */
+@keyframes borderBlink {
+  0%, 100% {
+    border-left-color: transparent; /* Border is transparent at start and end */
+  }
+  50% {
+    border-left-color: red; /* Border is visible (red) at 50% through the cycle */
+  }
+}
+
+
+
+
 
 /* CHANNELS */ 
 
-.content { flex:1; overflow:auto; padding:10px; } 
+.content { flex:1; overflow:auto; padding: 8px; } 
 
-.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(89px,1fr)); gap: 5px;}
+.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(16%,1fr)); gap: 5px;}
 
-.channel-card { background:#666; color: white; padding:7px 6px; border-radius:10px; text-align:center; cursor:pointer; font-size: 11px; word-wrap: break-word; overflow: hidden; text-transform: capitalize; }
+.channel-card { background:#666; color: white; padding: 6px 6px; border-radius:10px; text-align:center; cursor:pointer; font-size: 11px; word-wrap: break-word; overflow: hidden; text-transform: capitalize; }
 
-.channel-card img { width:80%; height: 50px; border-radius: 5px; object-fit:contain; margin-bottom: 3px; }
+.channel-card img { width:85%; height: 60px; border-radius: 6px; object-fit:contain; margin-bottom: 4px; }
 
 .active-channel,.channel-card:focus { outline: 3px solid orange; background: #0ff; color: maroon; } 
 
@@ -82,7 +118,7 @@ video { width: 100%; height: 100%; }
 
 /* BUTTON EXIT */ 
 
-.exx { padding: 3px 7px 3px 10px !important; background: #fff; color: #f00; margin-left: 5px; border-top: 1px solid black; border-right: 5px solid red; border-bottom: 1px solid black; border-left: 15px solid red; border-radius: 45px 4px 4px 45px; corner-shape: bevel; }
+.exx { padding: 3px 7px 3px 10px !important; background: #fff; color: #f00; margin-left: 5px; border-top: 1px solid black; border-right: 3px solid red; border-bottom: 1px solid black; border-left: 10px solid red; border-radius: 15px 4px 4px 15px; corner-shape: bevel; }
 
 
 
@@ -129,13 +165,13 @@ video { width: 100%; height: 100%; }
 /* STYLE MODAL */
 .modal {
     position: fixed;
-    top: 62px; /* Bawah header */
+    top: 61px; /* Bawah header */
     right: 2px; /* Sesuai permintaan */
-    width: 49%; /* Sesuai permintaan */
-    background: #222; height: 63%; 
+    width: 54%; /* Sesuai permintaan */
+    background: #222; height: 70%; 
     border: 1px solid gold;
     border-radius: 4px;
-    padding: 15px;
+    padding: 15px 14px;
     z-index: 9; /* Di bawah header, di atas konten lain */
     box-sizing: border-box;
 }
@@ -172,5 +208,14 @@ video { width: 100%; height: 100%; }
         
         .kolom-2 .item {
             background-color: #d1e7dd }
+
+
+.small, .container small { font-size: 13px; color: white; } 
+
+.small { margin-left: -7px; padding: 0px 2px 10px; } 
+
+
+.about td { height: 17px; } 
+.nonee { height: 10px; }
 
 
